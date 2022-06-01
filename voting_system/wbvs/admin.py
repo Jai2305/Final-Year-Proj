@@ -5,3 +5,4 @@ from .models import User, Booth, Candidate, Voter, VotingList, Result, History
 admin.site.register(User)
 admin.site.register(Booth)
 admin.site.register(Candidate)
+admin.site.register(Voter)

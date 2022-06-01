@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django import forms
- 
+import re
 from django.contrib.auth.hashers import make_password
 
 from .models import Result, User, Booth, Candidate, Voter, VotingList, History, Feedback
@@ -12,8 +12,13 @@ from .models import Result, User, Booth, Candidate, Voter, VotingList, History, 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import uuid
-import re
+from .fsave import fsave 
   
+
+
+def fpsave(request) :
+    fsave()
+    return render(request,'recieve.html')
 
 class RegisterForm(forms.Form):
     first_name = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'First Name', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=10)
@@ -107,7 +112,6 @@ def login_view(request):
             "login_form" : LoginForm(),
             "feedback_form" : FeedbackForm(),
         })
-
 
 def logout_view(request):
     logout(request)
@@ -257,6 +261,7 @@ def adminpage3(request, Id):
 
 @login_required(login_url='login')
 def boothcheck(request):
+    fsave()
     if request.method == "POST":
         data = VoterForm1(request.POST)
         if data.is_valid():

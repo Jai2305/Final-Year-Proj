@@ -36,6 +36,7 @@ class Voter(models.Model):
     voterID = models.ForeignKey(User, on_delete=models.CASCADE, related_name="voter_in_voterlist")
     allowed = models.IntegerField(default=0)
     voting_status = models.CharField(max_length=16, null=True)
+    fingerprint = models.CharField(max_length=16)
 
 
 class VotingList(models.Model):

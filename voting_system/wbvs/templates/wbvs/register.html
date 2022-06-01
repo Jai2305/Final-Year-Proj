@@ -58,7 +58,13 @@
                         </tr>
                     </table> 
                 </p>
+                
                 <p>Enter Your Email ID*{{register_form.email}}</p>
+                <p> 
+                    <table style="width: 765px;">
+                            <a href="{% url 'fpsave' %}">Finger Print</a>
+                    </table> 
+                </p>
                 <p> 
                     <p style="margin-bottom: 0;">Choose Your Password*</p>
                     <table style="width: 765px;">
@@ -76,10 +82,12 @@
                         </tr>
                     </table> 
                 </p>
+                <br><br>
+                
                 <p> 
                     <table style="width: 765px;">
                         <tr>
-                            <td style="border-color: white; width: 50%;"><input class="btn btn-primary" type="submit" style="background-color: #1b437d; width: 100%;" value="Register Now"></td>
+                            <td style="border-color: white; width: 50%;"><input action class="btn btn-primary" type="submit" style="background-color: #1b437d; width: 100%;" value="Register Now"></td>
                             <td style="border-color: white;">Already have an account? <a href="{% url 'login' %}">Log In here.</a></td>
                         </tr>
                     </table> 

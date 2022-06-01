@@ -5,9 +5,9 @@ import numpy
 import matplotlib.pyplot as plt
 from enhance import *
 from skimage.morphology import skeletonize, thin
-import time
+
 #os.chdir("/app/")
-start = time.time()
+
 def removedot(invertThin):
     temp0 = numpy.array(invertThin[:])
     temp0 = numpy.array(temp0)
@@ -76,47 +76,38 @@ def main():
 	kp1, des1 = get_descriptors(img1)
 
 	#image_name = sys.argv[2]
+	img2 = cv2.imread("487.BMP", cv2.IMREAD_GRAYSCALE)
+	kp2, des2 = get_descriptors(img2)
 
-	filename = ""
-	for file in [file for file in os.listdir("compare")] :
-		print(file)
-    	#fingerprint_image = cv2.imread("compare/"+file)
-		img2 = cv2.imread("compare/"+file, cv2.IMREAD_GRAYSCALE)
-		kp2, des2 = get_descriptors(img2)
+	# Matching between descriptors
+	bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+	matches = sorted(bf.match(des1, des2), key= lambda match:match.distance)
+	# Plot keypoints
+	img4 = cv2.drawKeypoints(img1, kp1, outImage=None)
+	img5 = cv2.drawKeypoints(img2, kp2, outImage=None)
+	f, axarr = plt.subplots(1,2)
+	axarr[0].imshow(img4)
+	axarr[1].imshow(img5)
+	plt.show()
+	# Plot matches
+	img3 = cv2.drawMatches(img1, kp1, img2, kp2, matches, flags=2, outImg=None)
+	plt.imshow(img3)
+	plt.show()
 
-		# Matching between descriptors
-		bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-		matches = sorted(bf.match(des1, des2), key= lambda match:match.distance)
-		# Plot keypoints
-		img4 = cv2.drawKeypoints(img1, kp1, outImage=None)
-		img5 = cv2.drawKeypoints(img2, kp2, outImage=None)
-		
+	# Calculate score
+	score = 0;
+	for match in matches:
+		score += match.distance
+	score_threshold = 33
+	if score/len(matches) < score_threshold:
+		print("Fingerprint matches.")
+	else:
+		print("Fingerprint does not match.")
 
-		# Calculate score
-		score = 0;
-		for match in matches:
-			score += match.distance
-		score_threshold = 25
-		if score/len(matches) < score_threshold:
-			print("Fingerprint matches.")
-			f, axarr = plt.subplots(1,2)
-			axarr[0].imshow(img4)
-			axarr[1].imshow(img5)
-			plt.show()
-			# Plot matches
-			img3 = cv2.drawMatches(img1, kp1, img2, kp2, matches, flags=2, outImg=None)
-			plt.imshow(img3)
-			plt.show()
-			break
-			
-		else:
-			print("Fingerprint does not match.")
-			
+
 
 if __name__ == "__main__":
 	try:
 		main()
-		end = time.time()
-		print("time taken "+str(end-start))
 	except:
 		raise
