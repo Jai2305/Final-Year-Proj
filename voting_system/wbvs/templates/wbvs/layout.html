@@ -1,0 +1,234 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        
+        <link rel="stylesheet" href="{% static 'wbvs/style/style.css' %}">
+        <script src="{% static 'wbvs/js/script.js' %}"></script>
+
+        {% block script %}
+        {% endblock %}
+
+        <title>
+            {% block title %}
+            {% endblock %}
+        </title>
+    </head>
+    <body>
+        <div class="sidenav" id="mySidenav">
+            <div class="logo_bkgrnd" style="background-color: white; width: 255;">
+            </div>
+            <top>
+                {% if user.is_authenticated %}
+                    <top_content><a href="{% url 'homepage' %}">Home</a></top_content>
+                    <top_content><a href="{% url 'history' %}">History</a></top_content>
+                    <top_content><a href="{% url 'logout' %}">LogOut</a></top_content>
+                {% else %}
+                    <top_content style="border-top: 5px;"><a href="{% url 'index' %}">Home</a></top_content>
+                    <top_content><a href="{% url 'login' %}">LogIn</a></top_content>
+                    <top_content><a href="{% url 'register' %}">Register</a></top_content>
+                {% endif %}
+            </top>
+
+            <bottom class="down">
+                <bottom_content style="border-bottom: none;">
+                    <a type="button" onclick="div_show(), closeNav(),   document.getElementById('hide2').style.display='none',
+                                                                        document.getElementById('hide3').style.display='none',
+                                                                        document.getElementById('hide4').style.display='none',
+                                                                        document.getElementById('hide5').style.display='none',
+                                                                        document.getElementById('hide6').style.display='none'">Important Links</a>
+                </bottom_content>
+
+                <bottom_content style="border-bottom: none;">
+                    <a type="button" onclick="div_show(), closeNav(),   document.getElementById('hide1').style.display='none',
+                                                                        document.getElementById('hide3').style.display='none',
+                                                                        document.getElementById('hide4').style.display='none',
+                                                                        document.getElementById('hide5').style.display='none',
+                                                                        document.getElementById('hide6').style.display='none'">FAQ</a>
+                </bottom_content>
+
+                <bottom_content style="margin-bottom: 40px;">
+                    <a type="button" onclick="div_show(), closeNav(),   document.getElementById('hide2').style.display='none', 
+                                                                        document.getElementById('hide1').style.display='none',
+                                                                        document.getElementById('hide4').style.display='none',
+                                                                        document.getElementById('hide5').style.display='none',
+                                                                        document.getElementById('hide6').style.display='none'">Feedback</a>
+                </bottom_content>
+            </bottom>
+            <bottom_content href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="border: 0; background-color: white;">
+                <img src="/media/images/left_blue_arrow.png" style="width: 25px; height: 20px; margin-bottom: 2px;">
+            </bottom_content>
+        </div>
+        <div id="main">
+            <header>
+                <div style=" border: 4px; border-color: #1b437d; color: #1b437d ;border-style: solid; padding: 5px;">
+                    <h2 style="text-align: center; margin-top: 10px; margin-bottom: 10px;"><strong>Finger Print Based Voting System</strong></h2>
+                </div>
+            </header>
+            
+
+            {% block content %}
+            {% endblock %}
+
+
+            {% block footer %}
+            {% endblock %}
+
+        </div>
+        
+        <bottom_content href="javascript:void(0)" onclick="openNav()">
+            <img src="/media/images/right_blue_arrow.png" style="width: 40px; height: 40px; padding: 10px 10px; bottom: 0; left: 0; position:fixed;">
+        </bottom_content>
+
+        <div id="abc">
+            <div id="popupContact">
+                <div id="aa">
+                    <div id="hide1">
+                        <div class="popup_head">
+                        Important Links
+                        <img class="close" src="/media/images/cancel.png" onclick ="div_hide(),document.getElementById('hide1').style.display='block', 
+                                                                                        document.getElementById('hide2').style.display='block', 
+                                                                                        document.getElementById('hide3').style.display='block', 
+                                                                                        document.getElementById('hide4').style.display='block', 
+                                                                                        document.getElementById('hide5').style.display='block',
+                                                                                        document.getElementById('hide6').style.display='block'" 
+                                                                                        class="close-button" style="margin-top: 10px;">
+                                                                                        <hr>
+                        </div>  
+                        <div class="imp_link">
+                            <img src="/media/images/landing_pg/index_images/M4.jpeg" style="float: left; width: 460px; border-radius: 20px; margin-left: 10px;">
+                            <div style="margin-left: 60px; float: left; font-size:x-large;">
+                                <ul>
+                                    <li> <a href="http://eci.nic.in" target="_blank">Election Commission Of India</a> </li> 
+                                    <li> <a href="https://www.nvsp.in/" target="_blank">National Voters Service Portal</a> </li> 
+                                    <li> <a href="https://www.india.gov.in/" target="_blank">National Portal Of India</a> </li> 
+                                    <li> <a href="https://cybercrime.gov.in/" target="_blank">National Cyber Crime Reporting Portal</a> </li> 
+                                    <li> <a href="https://www.onlinelegalindia.com/" target="_blank">Online Legal India</a> </li> 
+                                    <li> <a href="https://www.meity.gov.in/" target="_blank">Ministry Of Electronics & Information Technology</a> </li> 
+                                    <li> <a href="http://www.pmindia.gov.in/" target="_blank">Prime Misnister Office</a> </li> 
+                                    <li> <a href="https://www.mygov.in/" target="_blank">MyGov</a> </li>    
+                                    <li> <a href="https://rti.eci.nic.in/" target="_blank">RTI(Right To Information)</a></li> 
+                                    <li> <a href="http://www.cca.gov.in/" target="_blank">Controller Of Certifying Authorities</a> </li>
+                                    <li> <a href="http://goidirectory.nic.in/index.php" target="_blank">Government Of India Web Dictionary</a></li>
+                                    <li> <a href="https://www.sebi.gov.in/" target="_blank">Securities & Exchange Of India</a> </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="hide2">
+                        <div class="popup_head">
+                            FAQ
+                            <img class="close" src="/media/images/cancel.png" onclick ="div_hide(),document.getElementById('hide1').style.display='block', 
+                                                                                            document.getElementById('hide2').style.display='block', 
+                                                                                            document.getElementById('hide3').style.display='block', 
+                                                                                            document.getElementById('hide4').style.display='block', 
+                                                                                            document.getElementById('hide5').style.display='block',
+                                                                                            document.getElementById('hide6').style.display='block'" 
+                                                                                            class="close-button" style="margin-top: 10px;">
+                                                                                            <hr>
+                        </div>
+                        <div class="faq">
+                            <ques>Q: What is web based voting system ?</ques><br>
+                            <ans><strong>Ans:</strong> A web based voting system is a software platform that allows groups to securely conduct votes and elections. High-quality online voting systems balance ballot security, accessibility, and the overall requirements of an organization's voting event.</ans><br><br>
+                            <ques>Q: How will I benefit from the web based voting system?</ques><br>
+                            <ans><strong>Ans:</strong> Following are the benefits of Web Based Voting System -
+                                <ul style="margin: 0;">
+                                    <li>Ease of operation. With User ID and password, you can login to e-Voting system</li>
+                                    <li>Sufficient time to vote till the end of voting cycle</li>
+                                    <li>Paperless mode of casting vote.</li>
+                                </ul> 
+                            </ans><br>
+                            <ques>Q: How will I know if web based Voting website is secured? </ques><br>
+                            <ans><strong>Ans:</strong> We have ensured your voting security by implementing these steps -
+                                <ul style="margin: 0;">
+                                    <li>Unique IDs for each candidate, each voter and each Polling Booth. This reduces chance for collisions</li>
+                                    <li>Hashed passwords for users. Not even Admin will be able to see the password of a particular user.</li>
+                                    <li>Only one time access for voters. No multiple votes will be counted</li>
+                                    <li>Voting Admin has the right to accept or reject a voter's voting request. It enables more secure and limited polling process</li>
+                                    <li>Not even Voting Admin will be able to know which candidate is recieving how much votes.</li>
+                                </ul>
+                            </ans><br>
+                            <ques>Q: How do I register for web based Voting facility?</ques><br>
+                            <ans><strong>Ans:</strong> You can register through the register button in the  main page. </ans><br><br>
+                            <ques>Q: Is there any charge for using this Voting system?</ques><br>
+                            <ans><strong>Ans:</strong> No. Currently, we do not levy any charge on the users for using the web based Voting system.</ans><br><br>
+                            <ques>Q: Is there any User manual to understand the login and voting process ?</ques><br>
+                            <ans><strong>Ans:</strong> No, If you face any issue, just ask us. We are happy to help. </ans><br><br>
+                            <ques>Q:  Once I cast my vote on web based Voting System, can I modify my vote before the closing of Voting cycle? </ques><br>
+                            <ans><strong>Ans:</strong> No. Vote once casted will be considered final and cannot be modified.</ans><br><br>
+                            <ques>Q: Who can use this voting system?</ques><br>
+                            <ans><strong>Ans:</strong> Any one who have registered their profile. </ans><br><br>
+                            <ques>Q: Do I need special internet skills to cast my vote with web based voting system?</ques><br>
+                            <ans><strong>Ans:</strong> You don't need special internet skills to vote . This is because our system is created to be intuitive to use and you are provided with the information on every further step. The web based voting system operates like a website, so if you know how to navigate a website, then you'll be more than comfortable voting online.
+                                Once logged into our voting system with your access data, you'll be guided through the process of casting your vote.</ans><br><br>
+                            <ques>Q: How can I create an online election with web based voting system?</ques><br>
+                            <ans>To conduct your first online election with this system, all you need to do be a admin to conduct election.  You'll then have the following options once in the admin options:
+                                <ul style="margin: 0;">
+                                    <li>Generate one time Booth ID</li>
+                                    <li>Add Your Candidates with their respective names, description and photos</li>
+                                    <li>Finish Candidate Setup</li>
+                                    <li>Your Voting Is Live</li>
+                                    <li>Accept only recognizable IDs</li>
+                                    <li>You Can Reject those IDs which are not in your knowledge</li>
+                                    <li>View and declare the result</li>
+                                </ul>
+                            </ans><br>
+                            <ques>Q: How will the results be made available at the end of the voting period?</ques><br>
+                            <ans><strong>Ans:</strong> You can check your History Tab. Results will be availaible there after declaration from Voting Admin.</ans><br><br>
+                            <ques>Q: More questions?</ques><br>
+                            <ans>Ans : Get informed in our help center or ask for service by contacting us.We're here to make online elections a reality for you!</ans><br><br>
+                            <ques></ques><br>
+                            <ans></ans><br><br>
+                        </div>
+                    </div>
+                    <div id="hide3" class="bkgrnd" style="background-image: url(/media/images/landing_pg/index_images/3.jpeg); position: inherit;">
+                        <div class="popup_head">
+                            Feedback
+                            <img class="close" src="/media/images/cancel.png" onclick ="div_hide(),document.getElementById('hide1').style.display='block', 
+                                                                                            document.getElementById('hide2').style.display='block', 
+                                                                                            document.getElementById('hide3').style.display='block', 
+                                                                                            document.getElementById('hide4').style.display='block', 
+                                                                                            document.getElementById('hide5').style.display='block',
+                                                                                            document.getElementById('hide6').style.display='block'" 
+                                                                                            class="close-button" style="margin-top: 10px;">
+                                                                                            <hr style="margin-bottom: 120px;">
+                        </div>  
+                        <div class="feedback_box" style="background-color: white;">
+                            <form action="{% url 'feedback' %}"  method="post" style="padding: 20px;">
+                                {% csrf_token %}
+                                <p>Enter Subject For Your Feedback <br> {{feedback_form.subject}}</p>
+                                <p>Provide more details regarding the same <br> {{feedback_form.feedback}}</p>
+                                <input class="btn btn-primary" style=" background-color: #1b437d;  width: 100%;" type="submit" value="Submit Feedback">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function openNav() {
+                document.getElementById("mySidenav").style.width = "255px";
+                document.body.style.backgroundColor = "white";
+            }
+            function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+                document.body.style.backgroundColor = "white";
+            }
+        </script>
+        
+    </body>
+</html>

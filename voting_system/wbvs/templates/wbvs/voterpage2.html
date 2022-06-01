@@ -1,0 +1,31 @@
+{% extends "wbvs/layout.html" %}
+
+{% block script %}
+    <script>
+        function requesting_access(){
+            alert('Requesting Acces Please Wait!!')
+            window.location = "{% url 'waiting' boothID %}";
+        }
+    </script>
+{% endblock %}
+
+{% block title %}
+    VoterPage2
+{% endblock %}
+
+{% block content %}
+    <div class="bkgrnd" style="background-image: url(/media/images/landing_pg/index_images/N3.jpeg);margin-top: 5px; width: 98.9%;">
+        <div class="tyu" style="border-radius: 4px; border-style: solid; border-color: #1b437d; border-radius: 10px; margin: auto; margin-top: 25px;  width: fit-content;padding: 15px; background-color: white;">
+            <div class="details">
+                <p><strong>BoothID :- {{boothID}}</strong></p>
+                <p><strong>Title :- </strong>{{booth.title}}</p>
+                <p><strong>Description :-</strong>{{booth.description}}</p>
+                <p><strong>Admin :- </strong>{{admin.first_name}} {{admin.last_name}}</p>
+                <p><strong>Contact Admin At :- </strong>{{admin.email}}</p>
+                <form action="{% url 'access' boothID %}" method="POST" style="margin-top: 5px;">
+                    {% csrf_token %}
+                    <input class="btn btn-primary" type="submit" value="Request Access" style=" background-color: #1b437d; width: 100%; height: 100%;" onclick="requesting_access()">
+                </form>
+        </div>
+    </div>
+{% endblock %}

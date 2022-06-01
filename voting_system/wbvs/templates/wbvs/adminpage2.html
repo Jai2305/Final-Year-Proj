@@ -1,0 +1,101 @@
+{% extends "wbvs/layout.html" %}
+
+{% block title %}
+    Page2Admin
+{% endblock %}
+
+{% block content %} 
+    {% if cnadidate_count_warning %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <a type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></a>
+            <strong>Alert!!  </strong> Atleast 2 Candidates Should Be There
+        </div>
+    {% endif %}
+    <div class="bkgrnd" style="background-image: url(/media/images/landing_pg/index_images/M7.jpeg);margin-left: 0; background-position: center; left: 8px; right: 8px; position:relative;">
+        <div style="border: #1b437d; border-style: solid; width: fit-content; text-align: center; border-radius: 10px; padding: 15px; margin: auto; margin-top: 14px; margin-bottom: 20px; background-color: white;">
+            <h3>Booth ID :- {{boothID}}</h3>
+            <table style="width: 100%;">
+                <tr>
+                    <td>   
+                        <form>
+                            <input type="button" class="btn btn-info" onclick=  "div_show_other1(),
+                                                                                document.getElementById('hide1').style.display='none',
+                                                                                document.getElementById('hide2').style.display='none',
+                                                                                document.getElementById('hide3').style.display='none',
+                                                                                document.getElementById('hide5').style.display='none',
+                                                                                document.getElementById('hide6').style.display='none'"
+                                                                                value="Add Candidates" style="background-color: #1b437d; color: white; border: none; width: 100%;">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{% url 'adminpage3' boothID %}">
+                            <input type="submit" class="btn btn-info" value="Finish Candidate Setup" style="background-color: #1b437d; color: white; border: none;  width: 100%;">
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    
+        <div class="row">
+            {% for candidate in candidate_list %}
+                <div class="column" style="width: 655px; height: 300px;">
+                    <div class="card" style="width: 100%; height: 100%; word-wrap: break-word;">
+                        <div class="gc">
+                            <div class="ci">
+                                <img src="{{candidate.image.url}}" style="width: 200px; height: 250px; border-radius: 10px; border-color: #1b437d; border-width: 3px; border-style: solid;">
+                            </div>
+                            <div class="nm">
+                                Candidate Name :-
+                                <h3 style="color: #1b437d;"><strong>{{candidate.candidateName}}</strong></h3>
+                            </div>
+                            <div class="cid">
+                                Candidate Unique ID :-
+                                <h3 style="color: #1b437d;"><strong>{{candidate.candidateID}}</strong></h3>
+                            </div>
+                            <div class="dp">
+                                Description :-
+                                <h4>{{candidate.description}}</h4>
+                            </div>
+    
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="abc3">
+        <div>
+            <div id="aa3">
+                <img id="close2" src="/media/images/cancel.png" onclick ="div_hide_other1(),
+                                                                document.getElementById('hide1').style.display='block',
+                                                                document.getElementById('hide2').style.display='block',
+                                                                document.getElementById('hide3').style.display='block', 
+                                                                document.getElementById('hide4').style.display='block',
+                                                                document.getElementById('hide5').style.display='block',
+                                                                document.getElementById('hide6').style.display='block'" 
+                                                                class="close-button">
+                <div id="hide6">
+                    <h3 style=" margin: 5px;"><strong>- Add Candidate -</strong></h3>   
+                        <form action="{% url 'adminpage2' boothID %}" method="POST" enctype="multipart/form-data" style=" padding: 10px;">
+                            {% csrf_token %}
+                            <table id="candidate_table">
+                                <tr>
+                                    <td>{{adminform2.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{adminform2.des}}</td>
+                                </tr>
+                            </table>
+                            <table id="candidate_table">
+                                <tr>
+                                    <td>Choose Candidate's Profile Photo</td>
+                                    <td>{{adminform2.cand_im}}</td>
+                                </tr>
+                            </table>
+                            <button class="btn btn-info" style="background-color: #1b437d; color: white; width: 100%; border: none;">Submit</button>
+                        </form>
+                    </div>
+                </div>
+        </div>
+{% endblock %}

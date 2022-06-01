@@ -1,0 +1,77 @@
+{% extends "wbvs/layout.html" %}
+{% load testing %}
+
+{% block script %}
+    <script>
+        function autoRefresh() {
+            window.location = window.location.href;
+        }
+        setInterval('autoRefresh()', 5000);
+        function myFunction() {
+            if (confirm("Result Will Be Declared. This Action Is Irreversible ")) {
+                window.location = "{% url 'homepage' %}";
+            } 
+        }
+    </script>
+{% endblock %}
+
+
+{% block title %}
+    Page3Admin
+{% endblock %}
+
+
+{% block content %}
+    <div class="bkgrnd" style="background-image: url(/media/images/landing_pg/index_images/M8.jpeg);margin-top: 5px; width: 98.9%; position:fixed;">
+        <div style="border: #1b437d; border-style: solid; width: fit-content; text-align: center; border-radius: 10px; padding: 15px; margin: auto; margin-top: 20px; margin-bottom: 20px; background-color: white;">
+            <h3>
+                Booth ID :- <strong>{{boothID}}</strong>
+            </h3>
+            <form action="{% url 'calculate' boothID %}">
+                {% if voted_votes %}
+                <input class="btn btn-primary" type="submit" value="End Voting And Declare Result!!!!!!" style=" background-color: #1b437d; width: 100%;" onclick="myFunction()">
+                {% else %}
+                <input class="btn btn-primary" disabled type="submit" value="End Voting And Declare Result!!!!!!" style=" background-color: #1b437d; width: 100%;">
+                {% endif %}
+            </form>
+        </div>
+        <table style="text-align: center; margin-bottom: 20px; background-color: white;"" class="voting_stat_table">
+            <thead>
+                <td>Requests Received</td>
+                <td>Approved Vote Requests</td>
+                <td>Denied Request</td>
+                <td>Vote Counted</td>
+                <td>Pending Votes</td>
+            </thead>
+            <tr>
+                <td>{{total_requests}}</td>
+                <td>{{approved_requests}}</td>
+                <td>{{denied_requests}}</td>
+                <td>{{voted_votes}}</td>
+                <td>{{pending_votes}}</td>
+            </tr>
+        </table>
+        {% for voter in voter_list %}
+            <div class="column" style="width: 300px; height: 200px;">
+                <div class="card" style="width: 100%; height: 100%; word-wrap: break-word;">
+                    <p> Name -  <strong>{% get_voter_name voter.voterID.id %}</strong><br> 
+                        Email:- <strong>{% get_voter_mail voter.voterID.id %}</strong><br> 
+                        Voter ID - <strong>{{voter.voterID.id}}@voter</strong><br> 
+                        Status - <strong>{{voter.voting_status}}</strong><br></p>
+                    {% if not voter.allowed %}
+                    <form action="{% url 'adminpage3' boothID %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="foo" value="{{voter.voterID.id}}">
+                        <button name = "request_rply" style="width: 49%;" class="btn btn-success" value="1">Accept</button>
+                        <button name = "request_rply" style="width: 49%" class="btn btn-danger" value="-1">Reject</button>
+                    </form>
+                    {% elif voter.allowed == 1 %}
+                        <button disabled  class="btn btn-success">Request Accepted</button>
+                    {% else %}
+                        <button disabled  class="btn btn-danger">Request Rejected</button>
+                {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "wbvs/layout.html" %}
+
+{% block title %}
+    Login Page
+{% endblock %}
+
+{% block content %}
+    <div> 
+        <img src="/media/images/landing_pg/index_images/7.jpeg" style="
+            float: left;
+            margin-top: 25px;
+            margin-left: 20px; 
+            width: 780px; 
+            height: 480px;
+            border-radius: 20px; 
+            ">
+        <div 
+            style="
+                float: right;
+                width: 500px; 
+                height: 425px;
+                padding: 10px; 
+                border: 3px solid #1b437d; 
+                margin-top: 30px;
+                margin-right: 20px; 
+                background-color: white;
+                border-radius: 20px; 
+                ">
+
+            <p
+                style=" 
+                    font-size: 25px;
+                    color:#1b437d;
+                    text-decoration: underline;
+                    ">
+                <strong>Login</strong> 
+            </p>
+            {% if message %}
+                <div class="alert alert-danger">
+                    <strong> {{message}} </strong>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <strong> You're Good To Go </strong>
+                </div>
+            {% endif %}
+            
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <p>Enter Your Registered Email ID* <br> {{login_form.email}}</p>
+                <p>Enter Your Account Password* <br> {{login_form.password}}</p>
+                <input class="btn btn-primary" style=" background-color: #1b437d;  width: 100%;" type="submit" value="Login">
+            </form>
+            <br>
+            Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+            <div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

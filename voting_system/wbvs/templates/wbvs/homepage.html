@@ -1,0 +1,109 @@
+{% extends "wbvs/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Finger Print Based Voting System
+{% endblock %}
+ 
+
+{% block content %}
+    <div class="bkgrnd_homepage">
+        {% if success_vote %}
+            <div class="alert alert-success alert-dismissible"  role="alert">
+                <a type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></a>
+                <strong>Success!!!</strong> Your Vote Has Been Successfully Recorded.
+            </div>
+        {% elif feedback_msg %}
+            <div class="alert alert-success alert-dismissible"  role="alert">
+                <a type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></a>
+                <strong>Success !!! </strong> Thanks For Your Feedback. We appreciate It.
+            </div>
+        {% elif feedback_error_msg %}
+            <div class="alert alert-danger alert-dismissible"  role="alert">
+                <a type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></a>
+                <strong>Error!</strong> Try Again After Some Time.
+            </div>
+        {% elif success_login %}
+            <div class="alert alert-success alert-dismissible"  role="alert">
+                <a type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></a>
+                <strong>Welcome {{user.first_name}} {{user.last_name}}!!!</strong> You Have logged in successfully.
+            </div>
+        {% elif success_register %}
+            <div class="alert alert-success alert-dismissible"  role="alert">
+                <a type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></a>
+                <strong>Welcome {{user.first_name}} {{user.last_name}}!!!</strong> You Have Registered successfully.
+            </div>
+        {% elif failed_booth_find %}
+            <div class="alert alert-danger alert-dismissible"  role="alert">
+                <a type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></a>
+                <strong>Error!</strong> Requested Booth Either Doesn't Exist Or Voting Has Ended.Contact Admin!!
+            </div>
+        {% elif permission_denied %}
+            <div class="alert alert-danger alert-dismissible"  role="alert">
+                <a type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></a>
+                <strong>Request Denied</strong> Request has been denied.Contact Voting Admin!!
+            </div>
+        {% endif %}
+        <div class="bkgrnd" style="background-image: url(/media/images/landing_pg/index_images/N5.jpeg);background-position: 150px -300px; height: 512px; right: 8px;left: 8px;">    
+            <div class="homepage_choice">
+                <form >
+                    <input type="button" class="btn btn-info" onclick=  "div_show_other(),
+                                                                        document.getElementById('hide1').style.display='none',
+                                                                        document.getElementById('hide2').style.display='none',
+                                                                        document.getElementById('hide3').style.display='none',
+                                                                        document.getElementById('hide5').style.display='none',
+                                                                        document.getElementById('hide6').style.display='none'"
+                                                                        value="As A Voter">
+                </form>
+                <form >
+                    <input type="button" class="btn btn-info" onclick=  "div_show_other(),
+                                                                        document.getElementById('hide1').style.display='none',
+                                                                        document.getElementById('hide2').style.display='none',
+                                                                        document.getElementById('hide3').style.display='none',
+                                                                        document.getElementById('hide4').style.display='none',
+                                                                        document.getElementById('hide6').style.display='none'"
+                                                                        value="As A Voting Admin">
+                </form>
+                
+            </div>
+        </div>
+    </div>
+    <div id="abc2">
+        <div id="popupContact2">
+            <div id="aa2">
+                <img id="close2" src="/media/images/cancel.png" onclick ="div_hide_other(),
+                                                                document.getElementById('hide1').style.display='block',
+                                                                document.getElementById('hide2').style.display='block',
+                                                                document.getElementById('hide3').style.display='block', 
+                                                                document.getElementById('hide4').style.display='block',
+                                                                document.getElementById('hide5').style.display='block',
+                                                                document.getElementById('hide6').style.display='block'" 
+                                                                class="close-button">
+                <div id="hide4" style="padding: 10px; padding-top: 0;">
+                    <h3 style="padding-top: 5px;">
+                        Enter Booth ID
+                    </h3><hr>
+                    <form action="{% url 'boothcheck' %}" method="POST">
+                        {% csrf_token %}
+                        {{voterform1}}
+                        <br>
+                        <button class="btn btn-info" style="background-color: #1b437d; color: white; width: 100%;">Submit</button>
+                    </form>
+                </div>
+                <div id="hide5" style="padding: 10px; padding-top: 0;">
+                    <h3 style="padding-top: 5px;">
+                        Enter Booth Details
+                    </h3><hr>
+                    <h5>Alloted Booth ID :- <strong>{{boothID}}</strong></h5><hr>
+                    <form action="{% url 'adminform1' boothID %}" method="POST">
+                        {% csrf_token %}
+                        <p style="margin-bottom: 10px;">{{adminform1.title}}</p>
+                        {{adminform1.description}}
+                        <br>
+                        <button class="btn btn-info" style="background-color: #1b437d; color: white; width: 100%;">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

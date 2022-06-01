@@ -1,0 +1,92 @@
+{% extends "wbvs/layout.html" %}
+
+{% block title %}
+    Register Page
+{% endblock %}
+
+{% block content %}
+    <div> 
+        <img src="/media/images/landing_pg/index_images/4.jpeg" style="
+            float: right;
+            margin-top: 20px;
+            margin-left: 20px; 
+            width: 500px; 
+            height: 480px;
+            border-radius: 20px; 
+            ">
+        <div 
+            style="
+                float: left;
+                width: 790px; 
+                height: 475px;
+                padding: 10px; 
+                border: 3px solid #1b437d; 
+                margin-top: 20px;
+                margin-left: 20px; 
+                background-color: white;
+                border-radius: 20px; 
+                ">
+
+            <p
+                style=" 
+                    font-size: 25px;
+                    color:#1b437d;
+                    text-decoration: underline;
+                    margin-bottom: 2px;
+                    ">
+                <strong>Register</strong> 
+            </p>
+
+            {% if message %}
+                <div class="alert alert-danger">
+                    <strong> {{message}} </strong>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <strong> You're Good To Go </strong>
+                </div>
+            {% endif %}
+
+            <form action="{% url 'register' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <p> 
+                    <p style="margin-bottom: 0;">Name*</p>
+                    <table style="width: 765px;">
+                        <tr>
+                            <td style="border-color: white;">{{register_form.first_name}}</td>
+                            <td style="border-color: white;">{{register_form.last_name}}</td>
+                        </tr>
+                    </table> 
+                </p>
+                <p>Enter Your Email ID*{{register_form.email}}</p>
+                <p> 
+                    <p style="margin-bottom: 0;">Choose Your Password*</p>
+                    <table style="width: 765px;">
+                        <tr>
+                            <td style="border-color: white;">{{register_form.password}}</td>
+                            <td style="border-color: white;">{{register_form.confirmation}}</td>
+                        </tr>
+                    </table> 
+                </p>
+                <p> 
+                    <table style="width: 765px;">
+                        <tr>
+                            <td style="border-color: white; width: 50%;">Choose Your Profile Image*</td>
+                            <td style="border-color: white;">{{register_form.image}}</td>
+                        </tr>
+                    </table> 
+                </p>
+                <p> 
+                    <table style="width: 765px;">
+                        <tr>
+                            <td style="border-color: white; width: 50%;"><input class="btn btn-primary" type="submit" style="background-color: #1b437d; width: 100%;" value="Register Now"></td>
+                            <td style="border-color: white;">Already have an account? <a href="{% url 'login' %}">Log In here.</a></td>
+                        </tr>
+                    </table> 
+                </p>
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}

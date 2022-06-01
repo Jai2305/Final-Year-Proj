@@ -1,0 +1,52 @@
+{% extends "wbvs/layout.html" %}
+{% load testing %}
+{% load static %}
+
+{% block script %}
+<script src="{% static 'wbvs/js/confetti.js' %}"></script>
+{% endblock %}
+
+{% block title %}   
+    Result
+{% endblock %}
+ 
+{% block content %}
+    <div class="bkgrnd" style="background-image: url(/media/images/landing_pg/index_images/M1.jpeg); margin-top: 5px; width: 98.9%;background-position: center;  position: relative;">
+        <h4 style="text-align: center; margin: 20px; color: #1b437d;">Booth <strong style="text-decoration: underline;">{{boothID}}</strong> Polling Result</h4>
+        {% if show_result %}
+            <table style="text-align: center; margin: 30px; float: left; background-color: white;" class="voting_stat_table">
+                <thead>
+                    <td>Candidate Name</td>
+                    <td>Candidate Profile Photo</td>
+                    <td>Candidate ID</td>
+                    <td>Number Of Votes</td>
+                </thead>
+                {% for key, value in candidates_data.items %}
+                    <tr>
+                        <td>{% show_name key %}</td>
+                        <td><img src="{% show_image key %}" width="100px" height="120px" style="border-radius: 5px; border-color: #1b437d; border-style: solid;"></td>
+                        <td>{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <h1 style="background-color: black;">
+                <span class="gradient-text">Congratulations!!! <br> <strong style="text-decoration: underline; color: #1b437d;">{{winner}}</strong> <br>Has Won <br> The Polling</span>
+            </h1>
+        {% endif %}
+    </div>
+    <script>
+        const start = () => {
+            setTimeout(function() {
+                confetti.start()
+            }, 0);
+        };
+        const stop = () => {
+            setTimeout(function() {
+                confetti.stop()
+            }, 90000);
+        };
+        start();
+        stop();
+    </script>
+{% endblock %}

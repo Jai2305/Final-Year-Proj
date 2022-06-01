@@ -1,0 +1,56 @@
+{% extends "wbvs/layout.html" %}
+
+{% block script %}
+    <script>
+        function myFunction() {
+            if (confirm("Your Vote Will Be Recorded. This Action Is Irreversible")) {
+                window.location = "{% url 'homepage' %}";
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block title %}
+    Page3Voter
+{% endblock %}
+
+{% block content %} 
+    <div class="bkgrnd" style="background-image: url(/media/images/landing_pg/index_images/M9.jpeg); background-position: center;  position: relative;">
+        <div style="display: block; margin: auto; margin-top: 20px; margin-bottom: 20px; width: fit-content; background-color: white;">
+            <h3 style="color: #1b437d;">Booth ID :- <strong>{{boothId}}</strong></h3>
+        </div>
+        <form action="{% url 'voterpage3' boothId %}" method="POST">
+            {% csrf_token %}
+                <div class="row">
+                    {% for candidate in candidate_list %}
+                        <div class="column" style="width: 655px; height: 310px;">
+                            <div class="card" style="width: 100%; height: 100%; word-wrap: break-word;">
+                                <input type="radio" value="{{candidate.candidateID}}" id ="{{candidate.candidateID}}" name="candidate_selected">
+                                <label for="{{candidate.candidateID}}">
+                                    <div class="gc">
+                                        <div class="ci">
+                                            <img src="{{candidate.image.url}}" style="width: 200px; height: 250px; border-radius: 10px; border-color: #1b437d; border-width: 3px; border-style: solid;">
+                                        </div>
+                                        <div class="nm">
+                                            Candidate Name :-
+                                            <h3 style="color: #1b437d;"><strong>{{candidate.candidateName}}</strong></h3>
+                                        </div>
+                                        <div class="cid">
+                                            Candidate Unique ID :-
+                                            <h3 style="color: #1b437d;"><strong>{{candidate.candidateID}}</strong></h3>
+                                        </div>
+                                        <div class="dp">
+                                            Description :-
+                                            <h4>{{candidate.description}}</h4>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                
+            </select>
+            <input class="btn btn-primary" style="background-color: #1b437d; margin-top: 20px; display: block;" type="submit" value="Vote" onclick="myFunction()">
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "wbvs/layout.html" %}
+
+{% block title %}
+    View Details
+{% endblock %}
+ 
+
+{% block content %}
+    <div class="bkgrnd" style="background-image: url(/media/images/landing_pg/index_images/0.png); background-position: 50px 0px; width: 98.9%;">   
+        <div style="background: white; box-shadow: 4px 6px 4px 8px #1b437d; width: 350px; margin-left: 30px; text-align: center; display: block; padding: 20px; margin-top: 15px; border-radius: 50px;">
+            <img src="{{user.image.url}}" style="border-style: solid;border-color: #1b437d; border-width: 3px; border-radius: 100%; width: 230px; height: 260px;">
+            <h2 style="margin-bottom: 0px;">{{user.first_name}} {{user.last_name}}</h2>
+            <p><i>{{user.username}}</i><br>
+                <strong>Email</strong> - {{user.email}}<br>
+                <strong>Date Joined</strong> - {{user.date_joined.date}}<br>
+                <strong>Last Login</strong> - {{user.last_login.date}}</p>
+                <form action="{% url 'edit_password' %}">
+                    <input class="btn btn-primary" style=" background-color: #1b437d;  width: 100%;" type="submit" value="Change Password">
+                </form>
+        </div>
+    </div>
+{% endblock %}

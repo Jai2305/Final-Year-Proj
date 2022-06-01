@@ -1,0 +1,61 @@
+{% extends "wbvs/layout.html" %}
+{% load static %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block content %}
+    <div class="bkgrnd" style="background-image: url(/media/images/landing_pg/index_images/9.jpg); position:absolute; overflow-x: hidden; margin-top: 5px; width: 98.9%;">    
+        <div id="head_history">
+            <h2 style="font-weight: bold; text-decoration: underline;">Voting History</h2>
+            <h5>User :- <i>{{user.username}}</i></h5>
+        </div>
+        <div id="history_table">
+            <table class="table_p">
+                <thead style="color: #1b437d;">
+                    <strong>
+                        <td>Booth ID</td>
+                        <td>Acting As</td>
+                        <td>Status</td>
+                        <td>Availaible Action</td>
+                    </strong>
+                </thead>
+                    {% for i in data %}
+                        <tr>
+                            <td>{{i.boothID}}</td>
+                            <td>{{i.role}}</td>
+                            {% if i.result_declared and i.voting_status != "Not Voted" and i.voting_status != "Rejected" %}
+                                <td>{{i.result}}</td>
+                                <td><a href="{% url 'view_result' i.boothID %}">View Result</a></td>
+                            {% else %}
+                                {% if i.active %}
+                                    {% if i.role == 'Voting Admin' %}
+                                        <td>Pending</td>
+                                        <td><a href="{% url 'adminpage3' i.boothID %}">Go To Booth</a></td>
+                                    {% else %}
+                                        {% if i.voting_status == "Voted" %}
+                                            <td>{{i.result}}</td>
+                                            <td>Waiting For Result</td>
+                                        {% elif i.voting_status == "Rejected" %}
+                                            <td>Rejected</td>
+                                            <td>NA</td>
+                                        {% elif i.voting_status == "Not Voted" %}
+                                            <td>Vote Not Recorded</td>
+                                            <td><a href="{% url 'voterpage3' i.boothID %}">Vote</a></td>
+                                        {% else %}
+                                            <td>Pending</td>
+                                            <td>Waiting For Request Approval</td>
+                                        {% endif %}
+                                    {% endif %}
+                                {% else %}
+                                    <td>Permission Required</td>
+                                    <td>NA</td>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+            </table>
+        </div>
+    
+{% endblock %}

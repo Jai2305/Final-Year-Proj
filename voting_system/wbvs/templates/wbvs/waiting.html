@@ -1,0 +1,45 @@
+{% extends "wbvs/layout.html" %}
+
+
+{% block script %}
+    <script>
+        function autoRefresh() {
+            window.location = window.location.href;
+        }
+        setInterval('autoRefresh()', 6750);
+    </script>
+{% endblock %}
+
+
+{% block title %}
+    Waiting Page
+{% endblock %}
+
+
+{% block content %}
+    <div class="bkgrnd" style="background-image: url(/media/images/landing_pg/index_images/N2.jpeg);margin-left: 0; left: 8px; right: 8px;">
+        <div style="margin-top: 60px; margin-left: 80px; color: #1b437d;">
+            {% if allowed %} 
+                <form action="{% url 'voterpage3' boothID %}">
+                    {% csrf_token %}
+                    <button class="btn btn-primary" style="color: white; background-color: #1b437d; font-size: x-large;">Click Here<br> To <br> Proceed For Voting</button>
+                </form>
+            {% else %}
+                <h1 class="loader">
+                    <span>P</span>
+                    <span>L</span>
+                    <span>E</span>
+                    <span>A</span>
+                    <span>S</span>
+                    <span>E</span>
+                    <br>
+                    <span>W</span>
+                    <span>A</span>
+                    <span>I</span>
+                    <span>T</span>
+                </h1>
+                <br>
+                <h5>While We Process<br>Your Request</h5>
+            {% endif %}
+    </div>
+{% endblock %}
