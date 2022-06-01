@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import uuid
 from .fsave import fsave 
-  
+from .fsaveMatch1 import fsm
 
 
 def fpsave(request) :
@@ -261,13 +261,17 @@ def adminpage3(request, Id):
 
 @login_required(login_url='login')
 def boothcheck(request):
-    fsave()
     if request.method == "POST":
         data = VoterForm1(request.POST)
         if data.is_valid():
             boo = data.cleaned_data["boothID"]
-            try: 
+            candidate_var = Candidate.objects.filter(boothID = boo).all()
+            try:
+                res = 0 
+                res = fsm()
+                print(res)
                 booth = Booth.objects.get(boothID = boo, active = True)
+                if res == 1 : raise
             except:
                 return render(request, "wbvs/homepage.html", {
                     "failed_booth_find" : True,
@@ -277,10 +281,10 @@ def boothcheck(request):
                     "feedback_form" : FeedbackForm(),
                 })
             History.objects.create(user = request.user, boothID = boo, role = "Voter", result_declared = False, result = "", active = True, voting_status = "W8ing_4_req")
-            return render(request, "wbvs/voterpage2.html", {
-                "boothID" : boo,
-                "booth" : booth,
-                "admin" : User.objects.get(pk = booth.admin.id),
+            return render(request, "wbvs/voterpage3.html", {
+                "boothId" : boo,
+                
+                "candidate_list" : candidate_var,
                 "feedback_form" : FeedbackForm(),
             }) 
 
