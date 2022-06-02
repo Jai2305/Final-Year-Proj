@@ -34,7 +34,7 @@ def fsave() :
     src=images.get_attribute("src")
     src =src.replace("data:image/bmp;base64,","")
 
-    print("src-----------",src)
+    #print("src-----------",src)
 
     folder = "E:/OpenSource/Web-Based-Voting-System/voting_system/fp-pics"
     os.chdir(folder)

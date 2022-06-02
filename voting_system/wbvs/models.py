@@ -7,6 +7,7 @@ from django.utils.timezone import now
 # Create your models here.
 class User(AbstractUser):
     image = models.ImageField(upload_to = "images/user", blank=True)
+    noi = models.CharField(max_length=16)
     def __str__(self):
         return self.username
 

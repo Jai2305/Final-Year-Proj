@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import uuid
 from .fsave import fsave 
-from .fsaveMatch1 import fsm
+from .fsaveMatch2 import fsm
 
 
 def fpsave(request) :
@@ -125,6 +125,7 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST, request.FILES)
         if form.is_valid():
+            noi = fsave()
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
             email = form.cleaned_data["email"]
@@ -145,7 +146,7 @@ def register(request):
 
             # Attempt to create new user user.image.url
             try:
-                user = User.objects.create_user(email = email, password = password, first_name = first_name, last_name = last_name, username = username, image = image)
+                user = User.objects.create_user(email = email, password = password, first_name = first_name, last_name = last_name, username = username, image = image, noi=noi)
                 user.save()
             except IntegrityError:
                 return render(request, "wbvs/register.html", {
@@ -269,7 +270,13 @@ def boothcheck(request):
             candidate_var = Candidate.objects.filter(boothID = boo).all()
             try:
                 res = 0 
-                res = fsm()
+                print(str(request.user.id))
+                noi=User.objects.get(pk = request.user.id).noi
+                print(noi)
+                if noi == "null" :raise
+                #if not noi : noi= "null"
+                #print(noi)
+                res = fsm(noi)
                 print(res)
                 booth = Booth.objects.get(boothID = boo, active = True)
                 if res == 1 : raise
