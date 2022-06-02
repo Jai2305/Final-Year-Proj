@@ -42,7 +42,10 @@ def fsave() :
     b = base64.b64decode(src)
     img = Image.open(io.BytesIO(b))
     img.show()
-    img.save(str(random.randint(0,1000))+".bmp")
+    nameofim = str(random.randint(0,1000))
+    img.save(nameofim+".bmp")
+
+    return nameofim
 #src.save(str(random.randint(0,1000)),format ="BMP")
 #with open(str(random.randint(0,1000))+'.BMP','wb') as f :
 #    im = requests.get(src)
