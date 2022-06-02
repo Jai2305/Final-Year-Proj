@@ -38,17 +38,13 @@
         <table style="text-align: center; margin-bottom: 20px; background-color: white;"" class="voting_stat_table">
             <thead>
                 <td>Requests Received</td>
-                <td>Approved Vote Requests</td>
-                <td>Denied Request</td>
+            
                 <td>Vote Counted</td>
-                <td>Pending Votes</td>
             </thead>
             <tr>
                 <td>{{total_requests}}</td>
-                <td>{{approved_requests}}</td>
-                <td>{{denied_requests}}</td>
+                
                 <td>{{voted_votes}}</td>
-                <td>{{pending_votes}}</td>
             </tr>
         </table>
         {% for voter in voter_list %}

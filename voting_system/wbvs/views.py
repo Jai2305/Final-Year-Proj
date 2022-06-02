@@ -228,8 +228,8 @@ def adminpage3(request, Id):
     voter_list = Voter.objects.filter(boothID = Id).all()
     if request.method == "POST":
         voter_var = User.objects.get(pk = int(request.POST["foo"]))
-        request_rply = int(request.POST["request_rply"])
-        Voter.objects.filter(voterID = voter_var).update(allowed = request_rply)
+        request_rply = 1
+        Voter.objects.filter(voterID = voter_var).update(allowed = 1)
         if (request_rply == -1):
             Voter.objects.filter(voterID = voter_var, boothID = Id).update(voting_status = "Rejected")
             History.objects.filter(user = voter_var, boothID = Id).update(voting_status = "Rejected")
@@ -252,7 +252,7 @@ def adminpage3(request, Id):
         "voter_list" : voter_list,
         "total_requests" : len(Voter.objects.filter(boothID = Id).all()),
         "approved_requests" : len(Voter.objects.filter(boothID = Id , allowed = 1).all()),
-        "denied_requests" : len(Voter.objects.filter(boothID = Id , allowed = -1).all()),
+        "denied_requests" : len(Voter.objects.filter(boothID = Id , allowed = 1).all()),
         "voted_votes" : len(Voter.objects.filter(boothID = Id , allowed = 1, voting_status = "Voted").all()),
         "pending_votes" : len(Voter.objects.filter(boothID = Id , allowed = 1, voting_status = "Not Voted").all()),
         "feedback_form" : FeedbackForm(),
@@ -264,6 +264,7 @@ def boothcheck(request):
     if request.method == "POST":
         data = VoterForm1(request.POST)
         if data.is_valid():
+            allowed = True
             boo = data.cleaned_data["boothID"]
             candidate_var = Candidate.objects.filter(boothID = boo).all()
             try:
@@ -281,12 +282,11 @@ def boothcheck(request):
                     "feedback_form" : FeedbackForm(),
                 })
             History.objects.create(user = request.user, boothID = boo, role = "Voter", result_declared = False, result = "", active = True, voting_status = "W8ing_4_req")
-            return render(request, "wbvs/voterpage3.html", {
-                "boothId" : boo,
-                
-                "candidate_list" : candidate_var,
+            return render(request, "wbvs/waiting.html", {
+                "allowed" : allowed,
+                "boothID" : boo,
                 "feedback_form" : FeedbackForm(),
-            }) 
+            })
 
     return render(request, "wbvs/homepage.html", {
         "voterform1" : VoterForm1(),
@@ -298,15 +298,15 @@ def boothcheck(request):
 
 @login_required(login_url='login')
 def access(request, Id):
-    Voter.objects.create(boothID = Id, voterID = request.user, allowed = 0, voting_status = "Not Voted")
+    Voter.objects.create(boothID = Id, voterID = request.user, allowed = 1, voting_status = "Not Voted")
     return HttpResponseRedirect(reverse("waiting", args=(Id, )))
 
 
 @login_required(login_url='login')
 def waiting(request, Id):
     var = Voter.objects.get(boothID = Id, voterID = request.user)
-
-    allowed = False
+    var.allowed = 1
+    allowed = True
     not_allowed = False
     
     if var.allowed == 1:
@@ -329,7 +329,10 @@ def waiting(request, Id):
 
 @login_required(login_url='login')
 def voterpage3(request , Id):
+    
+    #waiting(request, Id)
     if request.method == "POST":
+        access(request,Id)
         voter_var = User.objects.get(pk = request.user.id)
         Voter.objects.filter(boothID = Id, voterID = request.user).update(voting_status = "Voted")
         VotingList.objects.create(boothID = Id, candidateID = request.POST["candidate_selected"], voterID = voter_var)
