@@ -47,7 +47,7 @@
             
             <form action="{% url 'login' %}" method="post">
                 {% csrf_token %}
-                <p>Enter Your Registered Email ID* <br> {{login_form.email}}</p>
+                <p>Enter Your Registered Aadhar No.* <br> {{login_form.email}}</p>
                 <p>Enter Your Account Password* <br> {{login_form.password}}</p>
                 <input class="btn btn-primary" style=" background-color: #1b437d;  width: 100%;" type="submit" value="Login">
             </form>

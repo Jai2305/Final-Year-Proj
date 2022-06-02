@@ -23,14 +23,14 @@ def fpsave(request) :
 class RegisterForm(forms.Form):
     first_name = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'First Name', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=10)
     last_name = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Last Name', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=10)
-    email = forms.EmailField(label = "",widget= forms.TextInput(attrs={'placeholder':'Email', 'class':'form-group form-control', 'autofocus type':'text'}))
+    email = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Adhaar No.', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=10)
     password = forms.CharField(label = "",widget=forms.PasswordInput(attrs={'placeholder':'Password', 'class':'form-group form-control', 'autofocus type':'text'}))
     confirmation = forms.CharField(label = "",widget=forms.PasswordInput(attrs={'placeholder':'Confirm Password', 'class':'form-group form-control', 'autofocus type':'text'}))
     image = forms.ImageField(label = "")
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(label = "",widget= forms.TextInput(attrs={'placeholder':'Email', 'class':'form-group form-control', 'autofocus type':'text', 'margin' : '20px'}))
+    email = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Aadhar No.', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=10)
     password = forms.CharField(label = "",widget=forms.PasswordInput(attrs={'placeholder':'Password', 'class':'form-group form-control', 'autofocus type':'text'}))
 
 
@@ -87,8 +87,8 @@ def login_view(request):
         # Attempt to sign user in
         email = request.POST["email"]
         password = request.POST["password"]
-        username = re.findall('(\S+)@', email)
-        username = str(username[0]) + "@user"
+        #username = re.findall('(\S+)@', email)
+        username = str(email + "@user")
         user = authenticate(request, username=username, password=password)
 
         # Check if authentication successful
@@ -103,7 +103,7 @@ def login_view(request):
             })
         else:
             return render(request, "wbvs/login.html", {
-                "message": "Invalid email and/or password.",
+                "message": "Invalid Aadhar no. and/or password.",
                 "login_form" : LoginForm(request.POST),
                 "feedback_form" : FeedbackForm(),
             })
@@ -131,8 +131,8 @@ def register(request):
             email = form.cleaned_data["email"]
             image = form.cleaned_data["image"]
 
-            username = re.findall('(\S+)@', email)
-            username = str(username[0]) + "@user"
+            #username = re.findall('(\S+)@', email)
+            username = str(email + "@user")
 
             # Ensure password matches confirmation
             password = form.cleaned_data["password"]

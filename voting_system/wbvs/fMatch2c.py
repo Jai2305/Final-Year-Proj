@@ -70,13 +70,13 @@ def get_descriptors(img):
 	return (keypoints, des);
 
 
-def main():
+def fmain():
 	#image_name = sys.argv[1]
-	img1 = cv2.imread("570.BMP", cv2.IMREAD_GRAYSCALE)
+	img1 = cv2.imread("E:/OpenSource/Web-Based-Voting-System/voting_system/vg/91.bmp", cv2.IMREAD_GRAYSCALE)
 	kp1, des1 = get_descriptors(img1)
 
 	#image_name = sys.argv[2]
-	img2 = cv2.imread("487.BMP", cv2.IMREAD_GRAYSCALE)
+	img2 = cv2.imread("E:/OpenSource/Web-Based-Voting-System/voting_system/vg/144.bmp", cv2.IMREAD_GRAYSCALE)
 	kp2, des2 = get_descriptors(img2)
 
 	# Matching between descriptors
@@ -98,7 +98,7 @@ def main():
 	score = 0;
 	for match in matches:
 		score += match.distance
-	score_threshold = 33
+	score_threshold = 36
 	if score/len(matches) < score_threshold:
 		print("Fingerprint matches.")
 	else:
