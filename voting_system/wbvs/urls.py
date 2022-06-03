@@ -7,6 +7,7 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("fpsave",views.fpsave,name="fpsave"),
     path("homepage", views.homepage, name="homepage"),
+    path("homepageAdmin", views.homepageAdmin, name="homepageAdmin"),
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),

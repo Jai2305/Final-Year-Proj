@@ -21,17 +21,19 @@ def fpsave(request) :
     return render(request,'recieve.html')
 
 class RegisterForm(forms.Form):
-    first_name = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'First Name', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=10)
-    last_name = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Last Name', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=10)
-    email = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Adhaar No.', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=10)
-    password = forms.CharField(label = "",widget=forms.PasswordInput(attrs={'placeholder':'Password', 'class':'form-group form-control', 'autofocus type':'text'}))
-    confirmation = forms.CharField(label = "",widget=forms.PasswordInput(attrs={'placeholder':'Confirm Password', 'class':'form-group form-control', 'autofocus type':'text'}))
+    first_name = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'First Name', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=20)
+    last_name = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Last Name', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=20)
+    email = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Adhaar No.', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=12)
+    booth = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Booth No.', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=20)
+    #password = forms.CharField(label = "",widget=forms.PasswordInput(attrs={'placeholder':'Password', 'class':'form-group form-control', 'autofocus type':'text'}))
+    #confirmation = forms.CharField(label = "",widget=forms.PasswordInput(attrs={'placeholder':'Confirm Password', 'class':'form-group form-control', 'autofocus type':'text'}))
     image = forms.ImageField(label = "")
 
 
 class LoginForm(forms.Form):
-    email = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Aadhar No.', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=10)
-    password = forms.CharField(label = "",widget=forms.PasswordInput(attrs={'placeholder':'Password', 'class':'form-group form-control', 'autofocus type':'text'}))
+    email = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Aadhar No.', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=12)
+    booth = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Booth No.', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=20)
+    #password = forms.CharField(label = "",widget=forms.PasswordInput(attrs={'placeholder':'Password', 'class':'form-group form-control', 'autofocus type':'text'}))
 
 
 class PasswordChangeForm(forms.Form):
@@ -73,23 +75,50 @@ def index(request):
 
 @login_required(login_url='login')
 def homepage(request):
-    return render(request, "wbvs/homepage.html", {
+    user = str(request.user)
+    print(user)
+    if user.find("@user") != -1:
+        print("Found!")
+        return render(request, "wbvs/homepage.html", {
         "voterform1" : VoterForm1(),
         "adminform1" : AdminForm1(),
         "boothID" : generate_boothID(),
         "feedback_form" : FeedbackForm(),
     })
+    else:
+        print("Not found!")
+        return render(request, "wbvs/homepageAdmin.html", {
+        "voterform1" : VoterForm1(),
+        "adminform1" : AdminForm1(),
+        "boothID" : generate_boothID(),
+        "feedback_form" : FeedbackForm(),
+    })
+    
 
+@login_required(login_url='login')
+def homepageAdmin(request):
+    print(request.user)
+    
+
+def authenticate_custom(username,booth):
+    try:
+        user = User.objects.get(username=username,booth=booth)
+    except User.DoesNotExist:
+        user = None
+    return user
 
 def login_view(request):
     if request.method == "POST":
 
         # Attempt to sign user in
         email = request.POST["email"]
-        password = request.POST["password"]
+        booth = request.POST["booth"]
+        #password = request.POST["password"]
         #username = re.findall('(\S+)@', email)
         username = str(email + "@user")
-        user = authenticate(request, username=username, password=password)
+        user = authenticate_custom(username,booth)
+        print(user)
+        print(User.objects.filter(is_superuser=True))
 
         # Check if authentication successful
         if user is not None:
@@ -103,7 +132,7 @@ def login_view(request):
             })
         else:
             return render(request, "wbvs/login.html", {
-                "message": "Invalid Aadhar no. and/or password.",
+                "message": "Invalid Aadhar no. or Booth No.",
                 "login_form" : LoginForm(request.POST),
                 "feedback_form" : FeedbackForm(),
             })
@@ -130,23 +159,23 @@ def register(request):
             last_name = form.cleaned_data["last_name"]
             email = form.cleaned_data["email"]
             image = form.cleaned_data["image"]
-
+            booth = form.cleaned_data["booth"]
             #username = re.findall('(\S+)@', email)
             username = str(email + "@user")
 
             # Ensure password matches confirmation
-            password = form.cleaned_data["password"]
-            confirmation = form.cleaned_data["confirmation"]
-            if password != confirmation:
-                return render(request, "wbvs/register.html", {
-                    "message": "Passwords must match.",
-                    "register_form" : RegisterForm(request.POST),
-                    "feedback_form" : FeedbackForm(),
-                })
+            #password = form.cleaned_data["password"]
+            #confirmation = form.cleaned_data["confirmation"]
+            #if password != confirmation:
+            #    return render(request, "wbvs/register.html", {
+            #        "message": "Passwords must match.",
+            #        "register_form" : RegisterForm(request.POST),
+            #        "feedback_form" : FeedbackForm(),
+            #    })
 
             # Attempt to create new user user.image.url
             try:
-                user = User.objects.create_user(email = email, password = password, first_name = first_name, last_name = last_name, username = username, image = image, noi=noi)
+                user = User.objects.create_user(email = email, first_name = first_name, last_name = last_name, username = username, image = image, booth=booth,noi=noi)
                 user.save()
             except IntegrityError:
                 return render(request, "wbvs/register.html", {
