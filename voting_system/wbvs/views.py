@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import uuid
 from .fsave import fsave 
-from .fsaveMatch2 import fsm
+from .fsaveMatch1 import fsm
 
 
 def fpsave(request) :
@@ -25,6 +25,7 @@ class RegisterForm(forms.Form):
     last_name = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Last Name', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=20)
     email = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Adhaar No.', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=12)
     booth = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Booth No.', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=20)
+    voteridno = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Voter ID', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=10)
     #password = forms.CharField(label = "",widget=forms.PasswordInput(attrs={'placeholder':'Password', 'class':'form-group form-control', 'autofocus type':'text'}))
     #confirmation = forms.CharField(label = "",widget=forms.PasswordInput(attrs={'placeholder':'Confirm Password', 'class':'form-group form-control', 'autofocus type':'text'}))
     image = forms.ImageField(label = "")
@@ -32,7 +33,7 @@ class RegisterForm(forms.Form):
 
 class LoginForm(forms.Form):
     email = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Aadhar No.', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=12)
-    booth = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Booth No.', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=20)
+    voteridno = forms.CharField(label = "",widget= forms.TextInput(attrs={'placeholder':'Voter ID.', 'class':'form-group form-control', 'autofocus type':'text'}), max_length=10)
     #password = forms.CharField(label = "",widget=forms.PasswordInput(attrs={'placeholder':'Password', 'class':'form-group form-control', 'autofocus type':'text'}))
 
 
@@ -100,9 +101,9 @@ def homepageAdmin(request):
     print(request.user)
     
 
-def authenticate_custom(username,booth):
+def authenticate_custom(username,voteridno):
     try:
-        user = User.objects.get(username=username,booth=booth)
+        user = User.objects.get(username=username,voteridno=voteridno)
     except User.DoesNotExist:
         user = None
     return user
@@ -112,11 +113,11 @@ def login_view(request):
 
         # Attempt to sign user in
         email = request.POST["email"]
-        booth = request.POST["booth"]
+        voteridno = request.POST["voteridno"]
         #password = request.POST["password"]
         #username = re.findall('(\S+)@', email)
         username = str(email + "@user")
-        user = authenticate_custom(username,booth)
+        user = authenticate_custom(username,voteridno)
         print(user)
         print(User.objects.filter(is_superuser=True))
 
@@ -160,6 +161,7 @@ def register(request):
             email = form.cleaned_data["email"]
             image = form.cleaned_data["image"]
             booth = form.cleaned_data["booth"]
+            voteridno = form.cleaned_data["voteridno"]
             #username = re.findall('(\S+)@', email)
             username = str(email + "@user")
 
@@ -175,11 +177,11 @@ def register(request):
 
             # Attempt to create new user user.image.url
             try:
-                user = User.objects.create_user(email = email, first_name = first_name, last_name = last_name, username = username, image = image, booth=booth,noi=noi)
+                user = User.objects.create_user(email = email, first_name = first_name, last_name = last_name, username = username, image = image, booth=booth,noi=noi,voteridno=voteridno)
                 user.save()
             except IntegrityError:
                 return render(request, "wbvs/register.html", {
-                    "message": "Email already in use.",
+                    "message": "Aadhar no. not.",
                     "register_form" : RegisterForm(request.POST),
                     "feedback_form" : FeedbackForm(),
                 })
@@ -298,10 +300,13 @@ def boothcheck(request):
             boo = data.cleaned_data["boothID"]
             candidate_var = Candidate.objects.filter(boothID = boo).all()
             try:
-                res = 0 
+                res = 1 
                 print(str(request.user.id))
                 noi=User.objects.get(pk = request.user.id).noi
                 print(noi)
+                print(boo)
+                print(request.user.booth)
+                if boo != request.user.booth+"@booth" : raise
                 if noi == "null" :raise
                 #if not noi : noi= "null"
                 #print(noi)

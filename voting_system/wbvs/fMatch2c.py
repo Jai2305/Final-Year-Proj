@@ -70,13 +70,13 @@ def get_descriptors(img):
 	return (keypoints, des);
 
 
-def fmain():
+def main():
 	#image_name = sys.argv[1]
-	img1 = cv2.imread("E:/OpenSource/Web-Based-Voting-System/voting_system/vg/91.bmp", cv2.IMREAD_GRAYSCALE)
+	img1 = cv2.imread("E:/OpenSource/Web-Based-Voting-System/voting_system/vg/220.bmp", cv2.IMREAD_GRAYSCALE)
 	kp1, des1 = get_descriptors(img1)
 
 	#image_name = sys.argv[2]
-	img2 = cv2.imread("E:/OpenSource/Web-Based-Voting-System/voting_system/vg/144.bmp", cv2.IMREAD_GRAYSCALE)
+	img2 = cv2.imread("E:/OpenSource/Web-Based-Voting-System/voting_system/vg/148.bmp", cv2.IMREAD_GRAYSCALE)
 	kp2, des2 = get_descriptors(img2)
 
 	# Matching between descriptors

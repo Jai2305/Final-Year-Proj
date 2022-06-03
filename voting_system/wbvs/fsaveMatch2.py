@@ -115,7 +115,7 @@ def matchmain(name, folder,noi):
         score = 0
         for match in matches:
             score += match.distance
-        score_threshold = 33
+        score_threshold = 42
         if score / len(matches) < score_threshold:
             print("Fingerprint matches.")
             f, axarr = plt.subplots(1, 2)
@@ -173,12 +173,12 @@ def fsm(noi) :
     try:
         res = matchmain(name, folder,"all")
         print("executed for vg")
-        if res == 0 :   
-            folder = "E:/OpenSource/Web-Based-Voting-System/voting_system/fp-pics"
-            res = matchmain(name, folder,noi)
-            print("executed for fpp")
-            if res == 1 : res =0
-            else : res = 1
+        #if res == 0 :   
+        #    folder = "E:/OpenSource/Web-Based-Voting-System/voting_system/fp-pics"
+        #    res = matchmain(name, folder,noi)
+       #     print("executed for fpp")
+        #    if res == 1 : res =0
+        #    else : res = 1
     except:
         raise
     return res

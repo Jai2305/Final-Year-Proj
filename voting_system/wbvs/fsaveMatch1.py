@@ -85,17 +85,20 @@ def get_descriptors(img):
     return (keypoints, des)
 
 
-def matchmain(name, folder):
-    result =0 
+def matchmain(name, folder,noi):
+    result =1
     # image_name = sys.argv[1]
-    img1 = cv2.imread("E:/OpenSource/Web-Based-Voting-System/voting_system/vg/"+ name, cv2.IMREAD_GRAYSCALE)
+    img1 = cv2.imread(name, cv2.IMREAD_GRAYSCALE)
     kp1, des1 = get_descriptors(img1)
 
     # image_name = sys.argv[2]
-
+    noi = noi+".bmp"
     filename = ""
     for file in [file for file in os.listdir(folder)]:
-        if file == name : continue
+        print(name,noi,file)
+        
+        if file !=noi : continue
+        #if noi== "all.bmp" and file == name : continue
         print(file)
         # fingerprint_image = cv2.imread("compare/"+file)
         img2 = cv2.imread(folder + "/" + file, cv2.IMREAD_GRAYSCALE)
@@ -112,7 +115,7 @@ def matchmain(name, folder):
         score = 0
         for match in matches:
             score += match.distance
-        score_threshold = 40
+        score_threshold = 42
         if score / len(matches) < score_threshold:
             print("Fingerprint matches.")
             f, axarr = plt.subplots(1, 2)
@@ -121,17 +124,21 @@ def matchmain(name, folder):
             #plt.show()
             # Plot matches
             img3 = cv2.drawMatches(img1, kp1, img2, kp2, matches, flags=2, outImg=None)
+            #folder = "E:/OpenSource/Web-Based-Voting-System/voting_system/vg"
+            #img.save(name)
+            os.remove("E:/OpenSource/Web-Based-Voting-System/voting_system/fp-pics/"+noi)
             #plt.imshow(img3)
             #plt.show()
-            result =1
+            result =0
             break
 
         else:
-            result = 0
+            result = 1
             print("Fingerprint does not match.")
+    print("result",result)
     return result
 
-def fsm() :
+def fsm(noi) :
 
     PATH = "C:\Program Files (x86)\chromedriver.exe"
     WINDOW_SIZE = "1920,1080"
@@ -166,29 +173,19 @@ def fsm() :
     name = str(random.randint(0, 1000)) + ".bmp"
     img.save(name)
     driver.quit()
-    res = 0
+    res = 1
     try:
-        res = matchmain(name, folder)
-        if res == 0 :
-            folder = "E:/OpenSource/Web-Based-Voting-System/voting_system/fp-pics"
-            res = matchmain(name, folder)
-            if res == 1 : res =0
-            else : res = 1
+        folder = "E:/OpenSource/Web-Based-Voting-System/voting_system/fp-pics"
+        # res = matchmain(name of image to be matched which is saved rn in vg,folder where noi is, noi )
+        print("E:/OpenSource/Web-Based-Voting-System/voting_system/vg"+name,folder,noi)
+        res = matchmain("E:/OpenSource/Web-Based-Voting-System/voting_system/vg/"+name, folder,noi)
+        #if res == 0 :   
+        #    folder = "E:/OpenSource/Web-Based-Voting-System/voting_system/fp-pics"
+        #    res = matchmain(name, folder,noi)
+       #     print("executed for fpp")
+        #    if res == 1 : res =0
+        #    else : res = 1
     except:
         raise
     return res
 
-# img.show()
-
-# src.save(str(random.randint(0,1000)),format ="BMP")
-# with open(str(random.randint(0,1000))+'.BMP','wb') as f :
-#    im = requests.get(src)
-#    f.write(im.content)
-
-# for ele in button :
-#    try:
-#        ele.click()
-#        print(button.index(ele))
-#    except :
-#        continue
-# driver.quit()

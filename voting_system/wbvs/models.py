@@ -9,6 +9,7 @@ class User(AbstractUser):
     image = models.ImageField(upload_to = "images/user", blank=True)
     noi = models.CharField(max_length=16)
     booth = models.CharField(max_length=20)
+    voteridno = models.CharField(max_length=10)
     def __str__(self):
         return self.username
 
