@@ -80,7 +80,7 @@ Admin panel can be accessed at **http://127.0.0.1:8000/admin** after running the
 
 ### Project Contributors
 <p align="left">
-  <img src="voting_system/media/images/readme_images/index_1.png" width=100% title="contributors">
+  <!--<img src="voting_system/media/images/readme_images/index_1.png" width=100% title="contributors">-->
 </p>
 
 ### Sidebar
